@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'screens/splash/splash_screen.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await initializeDateFormatting('es_ES', null); // 🔥 ESTO FALTABA
+
   runApp(const VimoApp());
 }
 

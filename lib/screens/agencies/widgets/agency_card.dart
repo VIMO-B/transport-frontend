@@ -3,10 +3,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class AgencyCard extends StatelessWidget {
   final String name;
+  final VoidCallback onSelect; // 🔥 NUEVO
 
   const AgencyCard({
     super.key,
     required this.name,
+    required this.onSelect, // 🔥 NUEVO
   });
 
   @override
@@ -22,9 +24,9 @@ class AgencyCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
 
-          /// ICONO SVG (sin fondo negro)
+          /// ICONO SVG
           SizedBox(
-            width: 40, // mantiene alineación limpia
+            width: 40,
             child: SvgPicture.asset(
               'assets/images/bus_icon.svg',
               height: 35,
@@ -39,24 +41,22 @@ class AgencyCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
 
-                /// NOMBRE DE LA AGENCIA
                 Text(
                   name,
                   style: const TextStyle(
                     fontSize: 14,
-                    fontWeight: FontWeight.w600, // SemiBold
+                    fontWeight: FontWeight.w600,
                     color: Color(0xFF4D4D4D),
                   ),
                 ),
 
                 const SizedBox(height: 4),
 
-                /// HORARIO
                 const Text(
                   "5am - 9pm",
                   style: TextStyle(
                     fontSize: 12,
-                    fontWeight: FontWeight.w500, // Medium
+                    fontWeight: FontWeight.w500,
                     color: Color(0xFF727272),
                   ),
                 ),
@@ -77,14 +77,12 @@ class AgencyCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            onPressed: () {
-              // Aquí luego navegamos al Home
-            },
+            onPressed: onSelect, // 🔥 AQUÍ ESTÁ LA MAGIA
             child: const Text(
               "Seleccionar",
               style: TextStyle(
                 fontSize: 12,
-                fontWeight: FontWeight.w500, // Medium
+                fontWeight: FontWeight.w500,
                 color: Colors.white,
               ),
             ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'widgets/agency_card.dart';
+import '../home/home_screen.dart';
+import '../../models/agency_model.dart';
 
 class AgenciesScreen extends StatelessWidget {
   const AgenciesScreen({super.key});
@@ -56,7 +58,7 @@ class AgenciesScreen extends StatelessWidget {
                 "Agencias disponibles",
                 style: TextStyle(
                   fontSize: 18,
-                  fontWeight: FontWeight.w600, // SemiBold
+                  fontWeight: FontWeight.w600,
                   color: Color(0xFF1C1C1C),
                 ),
               ),
@@ -73,6 +75,21 @@ class AgenciesScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 return AgencyCard(
                   name: agencies[index],
+
+                  /// 🔥 AQUÍ CONECTAMOS TODO
+                  onSelect: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => HomeScreen(
+                          agency: Agency(
+                            name: agencies[index],
+                            routes: ["Ruta 1", "Ruta 2"], // temporal
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 );
               },
             ),

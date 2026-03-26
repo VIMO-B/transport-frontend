@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../agencies/agencies_screen.dart';
 
-
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -48,16 +47,17 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller.forward();
 
-    // Tiempo total del splash
+    /// ⏱️ Espera y navega
     Timer(const Duration(seconds: 3), () {
+      if (!mounted) return; // 🔥 evita errores
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (_) => const AgenciesScreen(),
+          builder: (_) => AgenciesScreen(), // ✅ sin const
         ),
       );
     });
-
   }
 
   @override
@@ -72,7 +72,7 @@ class _SplashScreenState extends State<SplashScreen>
       body: Stack(
         children: [
 
-          /// Gradiente base
+          /// 🎨 Gradiente base
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -86,7 +86,7 @@ class _SplashScreenState extends State<SplashScreen>
             ),
           ),
 
-          /// Overlay
+          /// 🎨 Overlay
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -101,7 +101,7 @@ class _SplashScreenState extends State<SplashScreen>
             ),
           ),
 
-          /// Logo animado
+          /// 🟣 Logo animado
           Center(
             child: FadeTransition(
               opacity: _fadeAnimation,
