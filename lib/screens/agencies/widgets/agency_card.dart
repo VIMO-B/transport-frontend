@@ -63,6 +63,7 @@ class AgencyCard extends StatelessWidget {
               ],
             ),
           ),
+          const SizedBox(width: 5),
 
           /// BOTÓN
           ElevatedButton(
@@ -77,7 +78,7 @@ class AgencyCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            onPressed: onSelect, // 🔥 AQUÍ ESTÁ LA MAGIA
+            onPressed: onSelect,
             child: const Text(
               "Seleccionar",
               style: TextStyle(

@@ -1,101 +1,113 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
+import '../../../services/api/route_stops_service.dart';
+import '../../../state/route_selected_state.dart';
 
 class RouteItem extends StatelessWidget {
-  final String routeName;
+  final int routeId;
   final String code;
+  final String routeName;
 
   const RouteItem({
     super.key,
-    required this.routeName,
+    required this.routeId,
     required this.code,
+    required this.routeName,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          child: Row(
-            children: [
-              /// 🚌 ICONO + CODIGO (CON INDICADOR ABAJO)
-              Stack(
-                children: [
-                  /// 🔲 CONTENEDOR PRINCIPAL
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 8,
-                    ),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF5F5F5),
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(
-                        color: const Color(0xFFD0D0D0), // 🔥 stroke
-                        width: 1,
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        SvgPicture.asset(
-                          "assets/images/icon_bus.svg",
-                          width: 18,
-                        ),
-                        const SizedBox(width: 6),
-                        Text(
-                          code,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+    return InkWell(
+      onTap: () async {
+        try {
+          final stops =
+              await RouteStopsService.getStopsByRoute(routeId);
 
-                  /// 🔻 LINEA ROSA (ABSOLUTA)
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      height: 3,
-                      decoration: const BoxDecoration(
-                        color: Color(0xFFFF005E),
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(6),
-                          bottomRight: Radius.circular(6),
+          RouteSelectedState.setStops(stops);
+
+          
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Error: $e")),
+          );
+        }
+      },
+
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+
+            /// 🚌 BLOQUE IZQUIERDO (ICONO + BADGE + LINEA ROJA)
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+
+                /// ICONO + CÓDIGO
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(color: Colors.black12),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.directions_bus,
+                        size: 16,
+                        color: Colors.black87,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        code,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
                         ),
                       ),
+                    ],
+                  ),
+                ),
+
+                /// 🔴 LÍNEA ROJA PEGADA ABAJO (DENTRO DEL BLOQUE)
+                Container(
+                  margin: const EdgeInsets.only(top: 4),
+                  height: 3,
+                  width: 52, // mismo ancho visual del bloque
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFE91E63),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(2),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
+            ),
 
-              const SizedBox(width: 12),
+            const SizedBox(width: 12),
 
-              /// 📝 NOMBRE RUTA
-              Expanded(
+            /// 📍 TEXTO DERECHA
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 6),
                 child: Text(
                   routeName,
                   style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.black87,
+                    fontSize: 15,
                     fontWeight: FontWeight.w600,
+                    color: Colors.black87,
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-
-        /// 🔘 SEPARADOR REAL
-        Container(
-          height: 1,
-          color: const Color(0xFFDBDBDB),
-        ),
-      ],
+      ),
     );
   }
 }

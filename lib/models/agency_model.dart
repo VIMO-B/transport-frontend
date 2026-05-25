@@ -1,9 +1,16 @@
 class Agency {
+  final int id;
   final String name;
-  final List<String> routes;
 
   Agency({
+    required this.id,
     required this.name,
-    required this.routes,
   });
+
+  factory Agency.fromJson(Map<String, dynamic> json) {
+    return Agency(
+      id: json['id'],
+      name: json['name'],
+    );
+  }
 }
